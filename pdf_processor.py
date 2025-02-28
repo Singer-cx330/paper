@@ -4,9 +4,10 @@ import tempfile
 import logging
 try:
     import magic
+    has_magic = True
 except ImportError:
     import mimetypes
-    magic = None
+    has_magic = False
     logging.warning("无法导入magic库，将使用mimetypes作为备用方案")
 
 # 配置日志
@@ -45,7 +46,7 @@ class PDFProcessor:
     def validate_pdf(self, file_path):
         """验证文件是否为有效的PDF"""
         try:
-            if magic:
+            if has_magic:
                 mime = magic.Magic(mime=True)
                 file_type = mime.from_file(file_path)
                 if file_type != 'application/pdf':
